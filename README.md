@@ -8,8 +8,15 @@ This is a intuitive [Game Maker Studio: 2](https://www.yoyogames.com/gamemaker) 
 
 # Requirements
 * Game Maker Studio: 2 with the HTML5 module.
+* This extension
 
-* Node.js for the sample server
+# Installation
+* Import this extension
+* Done! 
+You don't need any objects which initializes the extension or anything else. Just call `sio_connect(ip:string, port:int)` in order to connect to the server, that's all! :)
+
+I recommend you to check out the [Example project](https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/tree/master/Example%20project) to get started.
+
 # API
 #### `sio_connect(ip:string, port:int)`
 Call it before you call any other function. No return.
