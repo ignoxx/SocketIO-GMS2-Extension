@@ -29,7 +29,7 @@ In case you've disconnected for whatever reason, you can use this function to re
 
 #### `sio_addEvent(eventName:string)`
 Creates a new event. After adding a new event, we need to create a callback for this event.
-**ATTENTION** you have to follow this naming scheme: `gmcallback_sio_on_**eventName**`. Where `**eventName**` is replaced by the name you have specified above as an argument. Event names are alway **lowercase**.
+**ATTENTION** you have to follow this naming scheme: `gmcallback_sio_on_**eventName**`. Where `**eventName**` is replaced by the name you have specified above as an argument. Event names are always **lowercase**.
 
 **_Example:_**
 ```
