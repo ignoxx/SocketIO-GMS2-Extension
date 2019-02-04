@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>test socket client</title>
+    </head>
+
+    <body>
+        <script>
+            function gml_Script_gmcallback_sio_onConnect(){
+                console.log("onConnect called!!!!");
+            }
+
+            function gml_Script_gmcallback_sio_onDisconnect(){
+                console.log("onDisconnect");
+            }
+
+            function gml_Script_gmcallback_sio_onTest(x, y, data){
+                console.log("TESTTESTTESTTESTTEST!!! ::" + data);
+            }
+        </script>
+        
+        <script src="socket.io.js"></script>
+        <script src="gms2_socket.io.js"></script>
+    </body>
+</html>>
+
+
+
