@@ -77,3 +77,6 @@ ds_map_destroy(data);
 #### `sio_get_connection_status()`
 `@return: boolean`
 If the game client is connected to the server it will return `true` otherwise, if it's not connected to the server, `false`
+
+# Missing anything?
+Feel free to create a new issue or make a pull request, in case you solved your problem by yourself!
