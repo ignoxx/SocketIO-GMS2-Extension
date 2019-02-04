@@ -69,4 +69,4 @@ ds_map_destroy(data);
 
 #### `sio_get_connection_status()`
 `@return: boolean`
-If the game client is connected to the server it will return `true` otherwise, if it's not connected to the server `false`
+If the game client is connected to the server it will return `true` otherwise, if it's not connected to the server, `false`
