@@ -19,7 +19,7 @@ I recommend you to check out the [Example project](https://github.com/IgnasKaval
 
 # API
 #### `sio_connect(ip:string, port:int)`
-Call it before you call any other function. No return.
+Call it before you call any other function. This connects you to the specified server.
 
 #### `sio_disconnect()`
 Closes the current connection
