@@ -1,6 +1,8 @@
 # Example Project using the SocketIO extension
 # Requirements
-* Node.js for the server
+* Node.js and socket.io for the server
+* 1. Install [Node.js](https://nodejs.org/en/)
+* 2. Install Socket.io by typing `npm install socket.io` into the console
 * Game Maker Studio: 2 HTML5 export (Web modul)
 
 # Get started
