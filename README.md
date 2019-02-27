@@ -1,5 +1,6 @@
 # SocketIO-GMS2-Extension
 Socket.io extension for GameMaker: Studio 2 HTML5 (GameMaker: Studio 1.4 Support available now!) [Preview on YouTube](https://youtu.be/HyOxkqNxDG0)
+Download it from [releases](https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/releases)
 
 # Features
 [Socket.IO](https://github.com/socketio/socket.io) enables real-time, bidirectional and event-based communication. It works on every platform, browser or device, focusing equally on reliability and speed.
