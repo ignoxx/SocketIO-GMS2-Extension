@@ -11,7 +11,7 @@ const port = 3000;
 server.listen(port, (err) => {
   if (err) throw err
   console.log(`Listening on port ${port}`);
-})
+});
 
 var clients = {}; // all connected clients will be stored here
 var clientId = 0; // unique ID for every client
