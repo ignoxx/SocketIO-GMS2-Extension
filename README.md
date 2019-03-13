@@ -27,6 +27,7 @@ Closes the current connection
 
 #### `sio_reconnect()`
 In case you've disconnected for whatever reason, you can use this function to reconnect to the server. (It will use the provided address from `sio_connect(ip:string, port:int)`
+**(If connection is lost, socket.io will try re-connect by itself)**
 
 #### `sio_addEvent(eventName:string)`
 Creates a new event. After adding a new event, we need to create a callback for this event.
