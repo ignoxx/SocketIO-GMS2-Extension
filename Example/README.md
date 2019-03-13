@@ -8,7 +8,7 @@
 # Get started
 * Open the provided GMS project
 * Run the server `node serversample.js`
-* Run the GM:S 2 project
+* Run the GMS project
 * Done! 
 
 You can open as many browser-tabs as you want, the server handles multiple clients at once
