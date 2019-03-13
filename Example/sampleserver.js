@@ -38,8 +38,8 @@ io.on('connection', (client) => {
         client.broadcast.emit('create_player_other', JSON.stringify(clients[playerId]));
 
         //Tell ourself which players are connected right now
-        for(var key in Object.keys(clients)){
-            var value = clients[key];
+        for(let key in Object.keys(clients)){
+            let value = clients[key];
 
             //We don't want to get our own data again, skip ourself..
             if(value != undefined && key != playerId){
