@@ -1,68 +1,102 @@
 /*
-    Gamemaker: Studio 2 Socket.io extension 
+    Gamemaker: Studio 1.4/2 Socket.io extension 
     Author: Ignas Kavaliauskas
     https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension
 */
+
 const server = require('http').createServer()
 const io = require('socket.io')(server)
 const port = 3000;
 
 // Listen for incoming connections
 server.listen(port, (err) => {
-  if (err) throw err
-  console.log(`Listening on port ${port}`);
+    if (err) throw err
+    console.log(`Listening on port ${port}`);
 });
 
-var clients = {}; // all connected clients will be stored here
+var players = []; // all connected players will be stored here
 var clientId = 0; // unique ID for every client
+
+
+class Player {
+    constructor(data) {
+        this.username = data.username;
+        this.socket = data.socket;
+        this.id = data.id;
+
+        this.x = data.x;
+        this.y = data.y;
+    }
+
+    toString() {
+        return JSON.stringify(this, this.replacer);
+    }
+
+    replacer(key, value) {
+        //@source https://stackoverflow.com/questions/4910567/hide-certain-values-in-output-from-json-stringify
+        // we don't need to send the socket object to the client
+        if (key == "socket") return undefined;
+        else return value;
+    }
+}
 
 io.on('connection', (client) => {
     var playerId = clientId++;
+    var player;
 
-    clients[playerId] = {}; // Player specific dictionary, we store all his values here
-    
+    // This event will be trigered when the client request to join the game. 
+    // In this example project, it'll happen after you've entered your username on the client side
     client.on('create_player', (data) => {
         data = JSON.parse(data);
-        console.log(`Client "${data.username}", with ID: ${playerId} created!`);
 
-        // Apply/generate player data
-        clients[playerId].username = data.username;
-        clients[playerId].id = playerId;
-        clients[playerId].x = Math.floor(Math.random() * 700) + 60;
-        clients[playerId].y = Math.floor(Math.random() * 500) + 60;
+        player = new Player({
+            socket: client,
+            id: playerId,
+            username: data.username,
+            x: Math.floor(Math.random() * 700) + 60,
+            y: Math.floor(Math.random() * 500) + 60
+        });
 
-        // Tell ourself that we joined
-        client.emit('create_player', JSON.stringify(clients[playerId]));
+        // Add to players list
+        players.push(player);
 
-        //Broadcast to all clients that we joined, ourself NOT included
-        client.broadcast.emit('create_player_other', JSON.stringify(clients[playerId]));
+        // Creating ourself, just ourself!
+        client.emit('create_player', player.toString());
 
-        //Tell ourself which players are connected right now
-        for(let key in Object.keys(clients)){
-            let value = clients[key];
+        // Creating ourself for everyone else, ourself NOT included
+        client.broadcast.emit('create_player_other', player.toString());
 
-            //We don't want to get our own data again, skip ourself..
-            if(value != undefined && key != playerId){
-                client.emit('create_player_other', JSON.stringify(value));
+        // Creating everyone else for ourself, ourself NOT included because we already created ourself
+        for (let i in players) {
+            if (players[i] !== player) {
+                client.emit('create_player_other', players[i].toString());
             }
         }
+
+        console.log(`Player "${player.username}", with ID: ${player.id} created!`);
     });
 
-    // Broadcast our position to all players
+    // Broadcast our position to all players, ourself NOT included
+    // This is just an example project, we don't care if the client cheats. But you might consider also sending your own position to yourself for security/sync reasons
+    // it depends on your project, e.g. if player position is important on client side
     client.on('position_update', (data) => {
         data = JSON.parse(data);
-        clients[playerId].x = data.x;
-        clients[playerId].y = data.y;
 
-        client.broadcast.emit('position_update', JSON.stringify(clients[playerId]));
+        player.x = data.x;
+        player.y = data.y;
+
+        client.broadcast.emit('position_update', player.toString());
     });
 
-    // Remove player from our clients dictionary
+    // When a player closes the game or refresh the page, this event will be triggered
     client.on('disconnect', () => {
-        console.log(`Client "${clients[playerId].username}", with ID: ${clients[playerId].id} disconnected.`);
 
-        // Tell everyone that we disconnected (ourself NOT included)
-        client.broadcast.emit('destroy_player', JSON.stringify(clients[playerId]));
-        delete clients[playerId];
+        // Tell everyone that we disconnected (ourself NOT included, because we already closed the game and we don't care)
+        client.broadcast.emit('destroy_player', player.toString());
+
+        //Remove player from list
+        players.splice(players.indexOf(player), 1);
+
+        console.log(`Player "${player.username}", with ID: ${player.id} disconnected.`);
     });
 });
