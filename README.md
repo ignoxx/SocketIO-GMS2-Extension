@@ -35,9 +35,10 @@ Creates a new event. After adding a new event, we need to create a callback for 
 
 **_Example:_**
 ```
+# create event of an obj
 sio_addEvent("create_player");
 
-create a new GML script: gmcallback_sio_on_create_player(argument0:string)
+create a new script > "gmcallback_sio_on_create_player"
 ```
 The callback script contains one argument `argument0`, which is the packet data received from the server. 
 In order to use the data you've to decode the JSON string to DS Map. 
