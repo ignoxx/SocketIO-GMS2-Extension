@@ -18,68 +18,8 @@ You don't need any objects which initializes the extension or anything else. Jus
 
 I recommend you to check out the [Example project](https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/tree/master/Example) to get started.
 
-# API
-#### `sio_connect(ip:string, port:int)`
-Call it before you call any other function. This connects you to the specified server.
-
-#### `sio_disconnect()`
-Closes the current connection
-
-#### `sio_reconnect()`
-In case you've disconnected for whatever reason, you can use this function to reconnect to the server. (It will use the provided address from `sio_connect(ip:string, port:int)`
-**(If connection is lost, socket.io will try re-connect by itself)**
-
-#### `sio_addEvent(eventName:string)`
-Creates a new event. After adding a new event, we need to create a callback for this event.
-**ATTENTION** you have to follow this naming scheme: `gmcallback_sio_on_**eventName**`. Where `**eventName**` is replaced by the name you have specified above as an argument. Event names are always **lowercase**.
-
-**_Example:_**
-```
-# create event of an obj
-sio_addEvent("create_player");
-
-create a new script > "gmcallback_sio_on_create_player"
-```
-The callback script contains one argument `argument0`, which is the packet data received from the server. 
-In order to use the data you've to decode the JSON string to DS Map. 
-
-**_Example:_**
-```
-# gmcallback_sio_on_create_player.gml
-
-// Decode the received JSON string to DS Map
-var data = json_decode(argument[0]);
-
-// Access our data
-var username = data[? "username"];
-var playerID = data[? "id"];
-var health = real(data[? "health"]);
-..
-```
-
-#### `sio_emit(eventName:string, data:string)`
-Send your data to the server. `eventName` is **lowercase!** `data` has to be a _JSON-string_. 
-In order to send a packet, I recommend you to follow the example below.
-
-**_Example:_**
-```
-# sio_emit_create_player.gml
-var eventName = "create_player";
-var username = "Destroyer123";
-
-// This is our packet
-var data = ds_map_create();
-  data[? "username"] = username;
-  data[? "x"] = x;
-  data[? "y"] = y;
-  sio_emit(eventName, json_encode(data));
-ds_map_destroy(data);
-
-```
-
-#### `sio_get_connection_status()`
-`@return: boolean`
-If the game client is connected to the server it will return `true` otherwise, if it's not connected to the server, `false`
+# Documentation
+Can be found inside the [Wiki](https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/wiki)!
 
 # Missing anything?
 Feel free to create a new issue or make a pull request, in case you solved your problem by yourself!
