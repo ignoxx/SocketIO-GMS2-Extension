@@ -19,7 +19,7 @@ You don't need any objects which initializes the extension or anything else. Jus
 I recommend you to check out the [Example project](https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/tree/master/Example) to get started.
 
 # Documentation
-Can be found inside the [Wiki](https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/wiki)!
+Can be found inside the [Wiki](https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/wiki)
 
 # Missing anything?
-Feel free to create a new issue or make a pull request, in case you solved your problem by yourself!
+Feel free to create a new issue or making a pull request!
