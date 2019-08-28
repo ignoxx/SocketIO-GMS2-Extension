@@ -1,8 +1,8 @@
 /*
     Gamemaker: Studio 2 Socket.io extension 
     Author:         Ignas Kavaliauskas (Inspired by Ivan Fonseca)
-    Edited By:      Chan Pei Keong (Inspired by Ignas Kavaliauskas)
     Source:         https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension
+    Contributors:   https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/graphs/contributors
 */
 
 // Small wrapper of Socket.io for GM:S 2
