@@ -1,5 +1,5 @@
 /*
-    Gamemaker: Studio 1.4/2 Socket.io extension 
+    Gamemaker: Studio 1.x/2 Socket.io extension 
     Author: Ignas Kavaliauskas
     https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension
 */
@@ -33,7 +33,6 @@ class Player {
     }
 
     replacer(key, value) {
-        //@source https://stackoverflow.com/questions/4910567/hide-certain-values-in-output-from-json-stringify
         // we don't need to send the socket object to the client
         if (key == "socket") return undefined;
         else return value;

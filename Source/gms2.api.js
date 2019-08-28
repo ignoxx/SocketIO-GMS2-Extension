@@ -1,5 +1,5 @@
 /*
-    Gamemaker: Studio 2 Socket.io extension 
+    Gamemaker: Studio 1.x/2 Socket.io extension
     Author:         Ignas Kavaliauskas (Inspired by Ivan Fonseca)
     Source:         https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension
     Contributors:   https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/graphs/contributors
@@ -14,12 +14,12 @@ class SocketIO {
 
     connect() {
         this.socket = io();
-        this.initSocketEvent();
+        this.init_socket_event();
     }
 
-    connectByUrl(url) {
+    connect_by_url(url) {
         this.socket = io(url);
-        this.initSocketEvent();
+        this.init_socket_event();
     }
 
     disconnect() {
@@ -30,7 +30,7 @@ class SocketIO {
         this.socket.open();
     }
 
-    initSocketEvent() {
+    init_socket_event() {
         this.socket.on('connect', () => {
             gml_Script_gmcallback_sio_on_connect();
         });
@@ -40,7 +40,7 @@ class SocketIO {
         });
     }
 
-    addEvent(name) {
+    add_event(name) {
         this.socket.on(name, (data) => {
             if (typeof data === 'object')
                 data = JSON.stringify(data);
@@ -53,7 +53,7 @@ class SocketIO {
         this.socket.emit(name, data);
     }
 
-    getConnectionStatus() {
+    get_connection_status() {
         return this.socket.connected;
     }
 }
@@ -66,7 +66,7 @@ function sio_connect() {
 }
 
 function sio_connect_by_url(url) {
-    socketio.connectByUrl(url);
+    socketio.connect_by_url(url);
 }
 
 function sio_disconnect() {
@@ -78,7 +78,7 @@ function sio_reconnect() {
 }
 
 function sio_addEvent(name) {
-    socketio.addEvent(name);
+    socketio.add_event(name);
 }
 
 function sio_emit(name, data) {
@@ -86,5 +86,5 @@ function sio_emit(name, data) {
 }
 
 function sio_get_connection_status() {
-    return socketio.getConnectionStatus();
+    return socketio.get_connection_status();
 }
