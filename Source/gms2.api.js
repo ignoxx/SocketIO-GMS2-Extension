@@ -1,7 +1,9 @@
 /*
     Gamemaker: Studio 2 Socket.io extension 
-    Author: Ignas Kavaliauskas (Inspired by Ivan Fonseca)
-    https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension
+    Author:         Ignas Kavaliauskas (Inspired by Ivan Fonseca)
+    Edited By:      Chan Pei Keong (Inspired by Ignas Kavaliauskas)
+    Forked From:    https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension
+    Source:         https://github.com/Nichii/SocketIO-GMS2-Extension
 */
 
 // Small wrapper of Socket.io for GM:S 2
@@ -9,15 +11,10 @@ class SocketIO {
 
     constructor() {
         this.socket;
-        this.ip;
-        this.port;
     }
 
-    connect(ip, port) {
-        this.ip = ip;
-        this.port = port;
-
-        this.socket = io.connect(`http://${this.ip}:${this.port}`);
+    connect() {
+        this.socket = io();
 
         this.socket.on('connect', () => {
             gml_Script_gmcallback_sio_on_connect();
@@ -57,8 +54,8 @@ class SocketIO {
 // API for GM:S 2
 const socketio = new SocketIO();
 
-function sio_connect(ip, port) {
-    socketio.connect(ip, port);
+function sio_connect() {
+    socketio.connect();
 }
 
 function sio_disconnect() {
