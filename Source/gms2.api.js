@@ -37,12 +37,12 @@ class SocketIO {
             if (typeof data === 'object')
                 data = JSON.stringify(data);
 
-            window[`gml_Script_gmcallback_sio_on_${name.toLowerCase()}`](-1, -1, data);
+            window[`gml_Script_gmcallback_sio_on_${name}`](-1, -1, data);
         });
     }
 
     send(name, data) {
-        this.socket.emit(name.toLowerCase(), data);
+        this.socket.emit(name, data);
     }
 
     getConnectionStatus() {
