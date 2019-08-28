@@ -14,14 +14,12 @@ class SocketIO {
 
     connect() {
         this.socket = io();
+        this.initSocketEvent();
+    }
 
-        this.socket.on('connect', () => {
-            gml_Script_gmcallback_sio_on_connect();
-        });
-
-        this.socket.on('disconnect', () => {
-            gml_Script_gmcallback_sio_on_disconnect();
-        });
+    connectByUrl(url) {
+        this.socket = io(url);
+        this.initSocketEvent();
     }
 
     disconnect() {
@@ -30,6 +28,16 @@ class SocketIO {
 
     reconnect() {
         this.socket.open();
+    }
+
+    initSocketEvent() {
+        this.socket.on('connect', () => {
+            gml_Script_gmcallback_sio_on_connect();
+        });
+
+        this.socket.on('disconnect', () => {
+            gml_Script_gmcallback_sio_on_disconnect();
+        });
     }
 
     addEvent(name) {
@@ -55,6 +63,10 @@ const socketio = new SocketIO();
 
 function sio_connect() {
     socketio.connect();
+}
+
+function sio_connect_by_url(url) {
+    socketio.connectByUrl(url);
 }
 
 function sio_disconnect() {
