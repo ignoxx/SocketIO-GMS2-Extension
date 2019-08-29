@@ -1,4 +1,4 @@
-# Example project using the SocketIO extension
+# Example project using the SocketIO extension v1.0.2
 # Requirements
 * Node.js and socket.io for the server
 * 1. Install [Node.js](https://nodejs.org/en/)
