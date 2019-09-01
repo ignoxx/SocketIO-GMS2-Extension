@@ -21,5 +21,7 @@ I recommend you to check out the [Example project](https://github.com/IgnasKaval
 # Documentation
 Can be found inside the [Wiki](https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/wiki)
 
+Get started with your first project with this [blog post](https://medium.com/@ignoxx/create-a-io-game-using-game-maker-studio-2-and-node-js-part-1-f591781bcd17)
+
 # Missing anything?
 Feel free to create a new issue or making a pull request!
