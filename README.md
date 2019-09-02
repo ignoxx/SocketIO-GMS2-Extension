@@ -14,7 +14,7 @@ This is a intuitive [Game Maker Studio: 2](https://www.yoyogames.com/gamemaker) 
 # Installation
 * Import this extension
 * Done! 
-You don't need any objects which initializes the extension or anything else. Just call `sio_connect()` in order to connect to the server, that's all! :)
+You don't need any objects which initializes the extension or anything else. Just call `sio_connect()` or `sio_connect_by_url(url:string)` in order to connect to the server, that's all! :)
 
 I recommend you to check out the [Example project](https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension/tree/master/Example/Example%201) to get started.
 
