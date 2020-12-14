@@ -1,11 +1,11 @@
 /*
     Gamemaker: Studio 1.x/2 Socket.io extension 
-    Author: Ignas Kavaliauskas
     https://github.com/IgnasKavaliauskas/SocketIO-GMS2-Extension
 */
 
 const server = require('http').createServer()
-const io = require('socket.io')(server)
+const io = require('socket.io')(server, { cors: { origin: '*' } });
+
 const port = 3000;
 
 // Listen for incoming connections

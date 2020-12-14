@@ -1,7 +1,7 @@
 const PORT = 3000;
 
 const server = require('http').createServer();
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, { cors: { origin: '*' } });
 
 // Listen for incoming connections
 server.listen(PORT, (err) => {

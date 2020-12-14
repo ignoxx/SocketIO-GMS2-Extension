@@ -6,10 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Ignas Kavaliauskas",
   "license": "ISC",
   "dependencies": {
-    "node-gameloop": "^0.1.4",
-    "socket.io": "^2.2.0"
+    "socket.io": "^3.0.4"
   }
 }
