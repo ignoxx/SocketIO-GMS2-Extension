@@ -12,11 +12,11 @@ class SocketIO {
 
     connect() {
         this.socket = io();
-        this.init_socket_event();
+        this.init_socket_event({ transports: ["websocket", "polling"] });
     }
 
     connect_by_url(url) {
-        this.socket = io(url);
+        this.socket = io(url, { transports: ["websocket", "polling"] });
         this.init_socket_event();
     }
 
