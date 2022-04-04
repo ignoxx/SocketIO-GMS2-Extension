@@ -11,8 +11,8 @@ class SocketIO {
     }
 
     connect() {
-        this.socket = io();
-        this.init_socket_event({ transports: ["websocket", "polling"] });
+        this.socket = io({ transports: ["websocket", "polling"] });
+        this.init_socket_event();
     }
 
     connect_by_url(url) {
