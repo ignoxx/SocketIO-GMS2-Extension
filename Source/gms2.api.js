@@ -8,15 +8,16 @@ class SocketIO {
 
     constructor() {
         this.socket = null;
+        this.options = { transports: ["websocket", "polling"] }
     }
 
     connect() {
-        this.socket = io({ transports: ["websocket", "polling"] });
+        this.socket = io(this.options);
         this.init_socket_event();
     }
 
     connect_by_url(url) {
-        this.socket = io(url, { transports: ["websocket", "polling"] });
+        this.socket = io(url, this.options);
         this.init_socket_event();
     }
 
