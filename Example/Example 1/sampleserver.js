@@ -26,6 +26,7 @@ class Player {
 
         this.x = data.x;
         this.y = data.y;
+        this.socketId = data.socketId;
     }
 
     toString() {
@@ -52,6 +53,7 @@ io.on('connection', (client) => {
             socket: client,
             id: playerId,
             username: data.username,
+            socketId: client.id,
             x: Math.floor(Math.random() * 700) + 60,
             y: Math.floor(Math.random() * 500) + 60
         });
@@ -89,13 +91,30 @@ io.on('connection', (client) => {
 
     // When a player closes the game or refresh the page, this event will be triggered
     client.on('disconnect', () => {
+        try {
+            // Tell everyone that we disconnected (ourself NOT included, because we already closed the game and we don't care)
+            client.broadcast.emit('destroy_player', player.toString());
 
-        // Tell everyone that we disconnected (ourself NOT included, because we already closed the game and we don't care)
-        client.broadcast.emit('destroy_player', player.toString());
+            //Remove player from list
+            players.splice(players.indexOf(player), 1);
 
-        //Remove player from list
-        players.splice(players.indexOf(player), 1);
+            console.log(`Player "${player.username}", with ID: ${player.id} disconnected.`);
+        }
+        catch (err) {
+            //If the player is undefined we need to remove him here
+            try {
+                let ids = [];
+                io.sockets.sockets.forEach(socket => {
+                    ids.push(socket.id);
+                });
+                players = players.filter(player => {
+                    return ids.includes(player.socketId);
+                });
+            }
+            catch (error) {
+                console.log(error)
+            }
+        }
 
-        console.log(`Player "${player.username}", with ID: ${player.id} disconnected.`);
     });
 });
