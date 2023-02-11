@@ -15,7 +15,6 @@ server.listen(port, (err) => {
 });
 
 var players = []; // all connected players will be stored here
-var clientId = 0; // unique ID for every client
 
 
 class Player {
@@ -23,10 +22,8 @@ class Player {
         this.username = data.username;
         this.socket = data.socket;
         this.id = data.id;
-
         this.x = data.x;
         this.y = data.y;
-        this.socketId = data.socketId;
     }
 
     toString() {
@@ -41,7 +38,6 @@ class Player {
 }
 
 io.on('connection', (client) => {
-    var playerId = clientId++;
     var player;
 
     // This event will be trigered when the client request to join the game. 
@@ -51,9 +47,8 @@ io.on('connection', (client) => {
 
         player = new Player({
             socket: client,
-            id: playerId,
+            id:client.id,
             username: data.username,
-            socketId: client.id,
             x: Math.floor(Math.random() * 700) + 60,
             y: Math.floor(Math.random() * 500) + 60
         });
@@ -91,30 +86,26 @@ io.on('connection', (client) => {
 
     // When a player closes the game or refresh the page, this event will be triggered
     client.on('disconnect', () => {
-        try {
-            // Tell everyone that we disconnected (ourself NOT included, because we already closed the game and we don't care)
-            client.broadcast.emit('destroy_player', player.toString());
-
-            //Remove player from list
-            players.splice(players.indexOf(player), 1);
-
-            console.log(`Player "${player.username}", with ID: ${player.id} disconnected.`);
+        //check if player is undefined to prevent memory leak
+        if (!player) {
+            let ids = [];
+            io.sockets.sockets.forEach(socket => {
+                ids.push(socket.id);
+            });
+            players = players.filter(player => {
+                return ids.includes(player.id);
+            });
+            return;
         }
-        catch (err) {
-            //If the player is undefined we need to remove him here
-            try {
-                let ids = [];
-                io.sockets.sockets.forEach(socket => {
-                    ids.push(socket.id);
-                });
-                players = players.filter(player => {
-                    return ids.includes(player.socketId);
-                });
-            }
-            catch (error) {
-                console.log(error)
-            }
-        }
+        // Tell everyone that we disconnected (ourself NOT included, because we already closed the game and we don't care)
+        client.broadcast.emit('destroy_player', player.toString());
+
+        //Remove player from list
+        players.splice(players.indexOf(player), 1);
+
+        console.log(`Player "${player.username}", with ID: ${player.id} disconnected.`);
+
+
 
     });
 });
