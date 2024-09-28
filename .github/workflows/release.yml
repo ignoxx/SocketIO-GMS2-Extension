@@ -1,7 +1,7 @@
 name: Create Release and Upload Files
 
 on:
-  # Triggers the workflow on a new tag push (which is typically used to create a release)
+  # Triggers the workflow on a new tag push (typically used to create a release)
   push:
     tags:
       - 'v*'  # Match any tag that starts with 'v', e.g., 'v1.0.0'
@@ -19,22 +19,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Use Node.js version 18 (or any version that your project supports)
+          node-version: '18'  # Use Node.js version 18 (or any version your project supports)
 
-      # Install dependencies
+      # Install dependencies using Yarn
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       # Build the project (this will create the files in the dist/ folder)
       - name: Build project using Vite
-        run: npm run build
+        run: yarn build
 
-      # Upload artifacts to GitHub release
+      # Create a GitHub release
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          # Automatically use the new tag as the release version
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           body: |
@@ -51,6 +50,6 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./dist/gms2.api.js  # Path to the main file you want to upload
           asset_name: gms2.api.js         # Name that will appear in the release
-          asset_content_type: application/javascript  # File type (could be adjusted based on what you upload)
+          asset_content_type: application/javascript  # File type (adjust if necessary)
 
 
