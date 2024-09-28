@@ -1,10 +1,13 @@
 name: Create Release and Upload Files
 
 on:
-  # Triggers the workflow on a new tag push (typically used to create a release)
+  # Trigger the workflow when a new tag is pushed
   push:
     tags:
-      - 'v*'  # Match any tag that starts with 'v', e.g., 'v1.0.0'
+      - 'v*'  # Matches any tag that starts with 'v', e.g., 'v1.0.0'
+
+permissions:
+  contents: write  # Grant write permission for contents to create releases
 
 jobs:
   build:
@@ -19,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Use Node.js version 18 (or any version your project supports)
+          node-version: '18'  # Use Node.js version 18 (or any version your project requires)
 
       # Install dependencies using Yarn
       - name: Install dependencies
@@ -29,19 +32,19 @@ jobs:
       - name: Build project using Vite
         run: yarn build
 
-      # Create a GitHub release
+      # Create GitHub Release using the tag
       - name: Create GitHub Release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}  # Use the tag name that triggered the workflow
+          release_name: Release ${{ github.ref_name }}  # Name the release after the tag
           body: |
             Automatic release for version ${{ github.ref_name }}.
           draft: false
           prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token to authenticate
 
       # Upload the contents of the dist/ folder to the release
       - name: Upload files to Release
@@ -51,5 +54,7 @@ jobs:
           asset_path: ./dist/gms2.api.js  # Path to the main file you want to upload
           asset_name: gms2.api.js         # Name that will appear in the release
           asset_content_type: application/javascript  # File type (adjust if necessary)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
