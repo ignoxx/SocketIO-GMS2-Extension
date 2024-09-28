@@ -4,7 +4,7 @@
 
 const server = require('http').createServer()
 const io = require('socket.io')(server, { cors: { origin: '*' } });
-const port = 3000;
+const port = 3003;
 
 // Listen for incoming connections
 server.listen(port, (err) => {
@@ -41,7 +41,7 @@ class Player {
 io.on('connection', (client) => {
     var player;
 
-    // This event will be trigered when the client request to join the game. 
+    // This event will be trigered when the client request to join the game.
     // In this example project, it'll happen after you've entered your username on the client side
     client.on('create_player', (data) => {
         if (player) return;
