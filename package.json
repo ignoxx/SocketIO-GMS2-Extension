@@ -1,14 +1,14 @@
 {
-  "name": "SocketIO-GMS2-Extension",
-  "version": "1.1.0",
-  "description": "GM:S 2 SocketIO Extension",
+  "name": "gm-socketio",
+  "version": "1.2.0",
+  "description": "Socket.IO extension for GameMaker: Studio 2.3 HTML5",
   "main": "dist/gms2.api.js",
   "scripts": {
     "build": "vite build",
     "test": "cd test && npm start",
     "clean": "rm -rf dist"
   },
-  "repository": "git@github.com:ignoxx/SocketIO-GMS2-Extension.git",
+  "repository": "git@github.com:ignoxx/gm-socketio.git",
   "author": "ignoxx",
   "license": "MIT",
   "dependencies": {
