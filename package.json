@@ -10,7 +10,7 @@
   "author": "ignoxx",
   "license": "MIT",
   "dependencies": {
-    "socket.io-client": "^4.8.0"
+    "socket.io-client": "^4.8.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -20,8 +20,6 @@
     "@rollup/plugin-node-resolve": "^15.3.0",
     "babel": "^6.23.0",
     "rollup": "^4.22.5",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-uglify": "^6.0.4",
-    "vite": "^5.4.8"
+    "vite": "^6.4.1"
   }
 }
