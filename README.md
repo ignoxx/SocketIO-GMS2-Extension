@@ -25,5 +25,24 @@ Can be found inside the [Wiki](https://github.com/IgnasKavaliauskas/SocketIO-GMS
 
 Get started with your first project with this [blog post](https://medium.com/@ignoxx/create-a-io-game-using-game-maker-studio-2-and-node-js-part-1-f591781bcd17)
 
+# Development
+```bash
+# Install dependencies
+yarn install
+
+# Build the extension
+yarn build
+
+# Test the build (starts test server)
+yarn test
+
+# Clean build artifacts
+yarn clean
+```
+
+# Requirements (Server-Side)
+- Socket.IO server v4.x (compatible with socket.io-client v4.x)
+- See `/test/server.js` for a minimal example
+
 # Missing anything?
 Feel free to create a new issue or making a pull request!
