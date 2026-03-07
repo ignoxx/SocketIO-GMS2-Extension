@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SocketIO-GMS2 Extension Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #eee;
+        }
+        h1 { color: #4ecca3; }
+        .status {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        .pending { background: #333; }
+        .pass { background: #2d5a27; }
+        .fail { background: #5a2727; }
+        .log {
+            background: #16213e;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            height: 300px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 2px 0;
+            padding: 2px 5px;
+        }
+        .log-entry.success { color: #4ecca3; }
+        .log-entry.error { color: #e74c3c; }
+        .log-entry.info { color: #3498db; }
+        button {
+            background: #4ecca3;
+            color: #1a1a2e;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: monospace;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        button:hover { background: #3db892; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <h1>🔌 SocketIO-GMS2 Extension Test</h1>
+    
+    <div id="tests">
+        <div class="status pending" id="test-1">⏳ Check if module loaded</div>
+        <div class="status pending" id="test-2">⏳ Connect to server</div>
+        <div class="status pending" id="test-3">⏳ Check connection status</div>
+        <div class="status pending" id="test-4">⏳ Add event listener</div>
+        <div class="status pending" id="test-5">⏳ Send test event</div>
+        <div class="status pending" id="test-6">⏳ Receive response</div>
+        <div class="status pending" id="test-7">⏳ Disconnect</div>
+    </div>
+    
+    <div>
+        <button onclick="runAutoTest()">🔄 Run Auto Test</button>
+        <button onclick="clearLog()">🗑️ Clear Log</button>
+    </div>
+    
+    <div class="log" id="log"></div>
+    
+    <p style="font-size: 12px; color: #666;">
+        Make sure the test server is running: <code>node test/server.js</code>
+    </p>
+
+    <!-- Load the built extension -->
+    <script src="../dist/gms2.api.js"></script>
+    
+    <script>
+        const log = document.getElementById('log');
+        const sio = window.SocketIOGMS2;
+        
+        function addLog(msg, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        function clearLog() {
+            log.innerHTML = '';
+        }
+        
+        function setStatus(id, status, message) {
+            const el = document.getElementById(id);
+            el.className = `status ${status}`;
+            const icon = status === 'pass' ? '✅' : status === 'fail' ? '❌' : '⏳';
+            el.textContent = `${icon} ${message}`;
+        }
+        
+        // Define GML callback functions that GM:S would normally provide
+        window.gml_Script_gmcallback_sio_on_connect = function() {
+            addLog('Connected callback triggered!', 'success');
+        };
+        
+        window.gml_Script_gmcallback_sio_on_disconnect = function() {
+            addLog('Disconnected callback triggered!', 'info');
+        };
+        
+        window.gml_Script_gmcallback_sio_on_test_response = function(a, b, data) {
+            addLog(`Received test_response: ${data}`, 'success');
+            setStatus('test-6', 'pass', 'Received response from server');
+        };
+        
+        window.gml_Script_gmcallback_sio_on_test_event = function(a, b, data) {
+            addLog(`Received test_event: ${data}`, 'info');
+        };
+        
+        async function runAutoTest() {
+            clearLog();
+            addLog('Starting automated test...', 'info');
+            
+            // Reset all statuses
+            for (let i = 1; i <= 7; i++) {
+                setStatus(`test-${i}`, 'pending', 'Waiting...');
+            }
+            
+            // Test 1: Check if module loaded
+            try {
+                if (!sio) throw new Error('SocketIOGMS2 not found');
+                addLog('Module loaded successfully', 'success');
+                addLog(`Available functions: ${Object.keys(sio).join(', ')}`, 'info');
+                setStatus('test-1', 'pass', 'Module loaded');
+            } catch (e) {
+                setStatus('test-1', 'fail', `Module load failed: ${e.message}`);
+                return;
+            }
+            
+            // Test 2: Connect
+            try {
+                addLog('Connecting to http://localhost:3000...', 'info');
+                sio.sio_connect_by_url('http://localhost:3000');
+                setStatus('test-2', 'pass', 'Connected to server');
+            } catch (e) {
+                setStatus('test-2', 'fail', `Connection failed: ${e.message}`);
+                return;
+            }
+            
+            // Wait a bit for connection
+            await new Promise(r => setTimeout(r, 500));
+            
+            // Test 3: Check connection status
+            try {
+                const connected = sio.sio_get_connection_status();
+                if (connected) {
+                    addLog('Connection status: CONNECTED', 'success');
+                    setStatus('test-3', 'pass', 'Connection status: connected');
+                } else {
+                    throw new Error('Not connected');
+                }
+            } catch (e) {
+                setStatus('test-3', 'fail', `Status check failed: ${e.message}`);
+            }
+            
+            // Test 4: Add event listener
+            try {
+                sio.sio_addEvent('test_response');
+                sio.sio_addEvent('test_event');
+                addLog('Event listeners added', 'success');
+                setStatus('test-4', 'pass', 'Event listeners added');
+            } catch (e) {
+                setStatus('test-4', 'fail', `Failed to add listener: ${e.message}`);
+            }
+            
+            // Test 5: Send event
+            try {
+                sio.sio_emit('test_event', 'Hello from GMS2 Extension!');
+                addLog('Test event sent', 'success');
+                setStatus('test-5', 'pass', 'Test event sent');
+            } catch (e) {
+                setStatus('test-5', 'fail', `Failed to send: ${e.message}`);
+            }
+            
+            // Wait for response
+            await new Promise(r => setTimeout(r, 500));
+            
+            // Test 6: Check if we got response (will be set by callback)
+            const test6Status = document.getElementById('test-6');
+            if (test6Status.className.includes('pending')) {
+                setStatus('test-6', 'fail', 'No response received (server may not be running)');
+            }
+            
+            // Test 7: Disconnect
+            try {
+                sio.sio_disconnect();
+                addLog('Disconnected', 'success');
+                setStatus('test-7', 'pass', 'Disconnected successfully');
+            } catch (e) {
+                setStatus('test-7', 'fail', `Disconnect failed: ${e.message}`);
+            }
+            
+            addLog('Test completed!', 'info');
+        }
+        
+        // Run auto-test on page load
+        window.onload = function() {
+            setTimeout(runAutoTest, 500);
+        };
+    </script>
+</body>
+</html>
