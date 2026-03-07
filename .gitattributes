@@ -1,0 +1,3 @@
+# Exclude test and example files from GitHub language statistics
+test/* linguist-documentation
+examples/** linguist-documentation
