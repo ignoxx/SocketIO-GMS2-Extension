@@ -1,32 +1,35 @@
 import { defineConfig } from 'vite'
-import resolve from "@rollup/plugin-node-resolve";
-import commonjs from "@rollup/plugin-commonjs";
-import babel from "@rollup/plugin-babel";
 
 export default defineConfig({
     build: {
         emptyOutDir: true,
         outDir: "dist",
-        rollupOptions: {
-            input: "src/index.js", // Only bundle the entry point
-            output: {
-                entryFileNames: "gms2.api.js", // Your desired output name
-                format: "cjs", // CommonJS format for compatibility
-                exports: "named", // Ensure named exports are preserved
-            },
-            treeshake: false, // Disable tree-shaking to preserve exports
-            plugins: [
-                resolve({
-                    browser: true, // Resolve for browser environment
-                }),
-                commonjs(), // Allow importing of CommonJS modules
-                babel({
-                    babelHelpers: "bundled",
-                    presets: ["@babel/preset-env"],
-                }),
-            ],
+        lib: {
+            entry: "src/index.js",
+            name: "SocketIOGMS2",
+            formats: ["iife"],
+            fileName: () => "gms2.api.js"
         },
-        minify: false, // Disable minification for now to avoid issues
+        rollupOptions: {
+            output: {
+                inlineDynamicImports: true,
+                extend: true
+            }
+        },
+        minify: "terser",
+        terserOptions: {
+            compress: {
+                drop_console: false,
+                drop_debugger: true,
+                passes: 2
+            },
+            mangle: {
+                reserved: ["sio_connect", "sio_connect_by_url", "sio_disconnect", "sio_reconnect", "sio_addEvent", "sio_emit", "sio_get_connection_status"]
+            },
+            format: {
+                comments: false
+            }
+        }
     }
 });
 
